@@ -4,7 +4,7 @@
 }
 :root
 {
-    --color-font: #649194;
+    --color-font: 	#FFFFFF;
     --bg-navbar: #44494775;
     --border-color: #ffffff67;
 }
@@ -47,7 +47,7 @@ div.navbar
 u
 {
     color: white;
-    text-shadow: 2px  2px 1px #055dff;
+    text-shadow: 2px  2px 1px #FFFFFF;
     text-decoration: none;
 }
 p
