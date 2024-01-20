@@ -1,187 +1,479 @@
 <!DOCTYPE html>
 <html lang="pl">
-    <head>
-        <title>Taryfikator</title>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="style.css" rel="stylesheet" type="text/css"/>
-        <link rel="icon" href="poli.png" />
 
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
-        <!-- Global site tag (gtag.js) - Google Analytics -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-F6W3M3CSVQ"></script>
-        <script>
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
+<head>
+    <meta charset="UTF-8">
+    <title>Taryfikator</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-F6W3M3CSVQ"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
 
-            gtag('config', 'G-F6W3M3CSVQ');
-        </script>
-    </head>
-    <body>
-        <div class="container">
-            <div class="navbar">
-                <div class="navbar-items">
-                     Taryfikator
-                </div>
-                <div class="navbar-items-nielegale"><a href="https://marcello506.github.io/Nlg/" target="_blank">Nielegale</a></div>
-            </div>
-            <div class="inne">
-                <h1>Inne:</h1>
-                <p>
-                    - Bezpodstawne wezwanie: $3 000
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+
+        gtag('config', 'G-F6W3M3CSVQ');
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <script>
+       $(document).ready(function () {
+    // Funkcja do obliczania całkowitego kosztu
+    function obliczKoszt() {
+        // Pobieranie wartości kwoty i zaznaczenia z opcji
+        var options = $('.checkbox-option');
+        var koszt = 0;
+        var opis = '';
+
+        // Iteracja po wszystkich opcjach
+        options.each(function () {
+            var kwota = parseFloat($(this).data('kwota')); // Pobieranie kwoty z atrybutu data-kwota
+            var zaznaczone = $(this).prop('checked'); // Sprawdzanie, czy opcja jest zaznaczona
+
+            if (zaznaczone) {
+                koszt += kwota;
+                opis += '- ' + $(this).parent().text().trim() + '<br>'; // Dodanie opisu z tekstu label
+            }
+        });
+
+        // Wyświetlanie wyniku jako liczby całkowitej bez przecinka
+        $('#wynik').text('/p_mandat id ' + Math.floor(koszt));
+
+        // Wyświetlanie opisów
+        $('#opisy').html('Wykroczenia:<br>' + opis);
+    }
+
+    // Obsługa przycisku "Oblicz"
+    $('#obliczBtn').click(function () {
+        obliczKoszt();
+    });
+
+            // Obsługa przycisku "Zaznacz wszystko"
+            $('#zaznaczWszystko').click(function () {
+                $('input[type=checkbox]').prop('checked', true);
+                obliczKoszt();
+            });
+
+            // Obsługa przycisku "Odznacz wszystko"
+            $('#odznaczWszystko').click(function () {
+                $('input[type=checkbox]').prop('checked', false);
+                obliczKoszt();
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="obliczenia">
+            <button type="button" id="obliczBtn">Oblicz</button>
+            
+            <button type="button" id="odznaczWszystko">Odznacz wszystko</button>
+            <p id="wynik"></p>
+            <p id="opisy"></p>
+        </div>
+    </div>
+    <div class="inne">
+
+        <h1>Inne:</h1>
+<p>
+  
+    <label class="checkbox-label" for="wezwanie">
+    - Bezpodstawne wezwanie: $<span data-kwota="3000">3 000</span>
+        <input type="checkbox" data-kwota="3000" class="checkbox-option" id="wezwanie">
+    </label>
+   
+
+    <br>
+    <label class="checkbox-label" for="slowa">
+    - Stosowanie słów wulgarnych: $<span data-kwota="3000">3 000</span>
+   
+        <input type="checkbox" data-kwota="3000" class="checkbox-option" id="slowa">
+        </label>
+
+      <br>
+
+
+      <label class="checkbox-label" for="agresja">
+    - agresja: $<span data-kwota="3000">3 000</span>
+        <input type="checkbox" data-kwota="3000" class="checkbox-option" id="agresja">
+    </label>
+
+
                     <br>
-                     - Stosowanie słów wulgarnych: pouczenie lub $3 000
+                    <label class="checkbox-label" for="atak">
+                    - Atak na inną osobę: 5 min więzienia + $<span data-kwota="4000">4 000</span>
+
+                    <input type="checkbox" data-kwota="4000" class="checkbox-option" id="atak">
+                </label>
+
                     <br>
-                    - Agresja słowna wobec funkcjonariusza: 5 min więzienia
+                    <label class="checkbox-label" for="atakfp">
+                    - Atak na funkcjonariusza: $5 000 i 15 min więzienia $<span data-kwota="5000"></span>
+                    <input type="checkbox" data-kwota="5000" class="checkbox-option" id="atakfp">
+                </label>
+
                     <br>
-                    - Atak na inną osobę: $4 000 i 5 min więzienia
+                    <label class="checkbox-label" for="zabicie">
+                    - Zabójstwo gracza: $2 000 i 10 min więzienia $<span data-kwota="2000"></span>
+                    <input type="checkbox" data-kwota="2000" class="checkbox-option" id="zabicie">
+                </label>
+
                     <br>
-                    - Atak na funkcjonariusza: $5 000 i 15 min więzienia
+                    <label class="checkbox-label" for="zabiciefp">
+                    - Zabójstwo funkcjonariusza: $7 500 i 20 min więzienia $<span data-kwota="7500"></span>
+                    <input type="checkbox" data-kwota="7500" class="checkbox-option" id="zabiciefp">
+                </label>
+
                     <br>
-                    - Zabójstwo gracza: $2 000 i 10 min więzienia
+                    <label class="checkbox-label" for="polecenia">
+                    - Niestosowanie się do poleceń funkcjonariusza Policji: $5 000 + 15 min więzienia $<span data-kwota="5000"></span>
+                    <input type="checkbox" data-kwota="5000" class="checkbox-option" id="polecenia">
+                </label>
+
                     <br>
-                    - Zabójstwo funkcjonariusza: $7 500 i 20 min więzienia
+                    <label class="checkbox-label" for="przekupienie">
+                    - Próba przekupstwa funkcjonariusza: $5 000 $<span data-kwota="5000"></span>
+                    <input type="checkbox" data-kwota="5000" class="checkbox-option" id="przekupienie">
+                </label>
+
                     <br>
-                    - Niestosowanie się do poleceń funkcjonariusza Policji: $5 000 + 15 min więzienia
+                    <label class="checkbox-label" for="utrudnianie">
+                    - Celowe utrudnianie pracy frakcjom: $5 500 $<span data-kwota="5500"></span>
+                    <input type="checkbox" data-kwota="5500" class="checkbox-option" id="utrudnianie">
+                </label>
+
                     <br>
-                    - Próba przekupstwa funkcjonariusza: $5 000
+                    <label class="checkbox-label" for="wyscig">
+                    - Nielegalne wyścigi: $2 500 $<span data-kwota="2500"></span>
+                    <input type="checkbox" data-kwota="2500" class="checkbox-option" id="wyscig">
+                </label>
+
                     <br>
-                    - Celowe utrudnianie pracy frakcjom: $5 500
+                    <label class="checkbox-label" for="zlot">
+                    - Nielegalny zlot samochodowy: $2 500 $<span data-kwota="2500"></span>
+                    <input type="checkbox" data-kwota="2500" class="checkbox-option" id="zlot">
+                </label>
+
                     <br>
-                    - Nielegalne wyścigi: $2 500
+                    <label class="checkbox-label" for="nienawisc">
+                    - Propagowanie nienawiści: $10 000 lub kara według regulaminu serwera $<span data-kwota="10000"></span>
+                    <input type="checkbox" data-kwota="10000" class="checkbox-option" id="nienawisc">
+                </label>
+
                     <br>
-                    - Nielegalny zlot samochodowy: $2 500
+                    <label class="checkbox-label" for="blad">
+                    - Wprowadzenie w błąd funkcjonariusza: $10 000 i 10 min więzienia $<span data-kwota="10000"></span>
+                    <input type="checkbox" data-kwota="10000" class="checkbox-option" id="blad">
+                </label>
+
                     <br>
-                    - Propagowanie nienawiści: $10 000 lub kara według regulaminu serwera
-                    <br>
-                    - Wprowadzenie w błąd funkcjonariusza: $10 000 i 10 min więzienia
-                    <br>
-                    - Kara za przebywanie osób nieupoważnionych na terenie aresztu komendy głównej (tj. całego piętra -1): $10 000 i 10 min więzienia 
-                </p>
-            </div>
-            <div class="manewry">
-                <h1>Manewry:</h1>
-                <p>
-                    - Wykonanie niedozwolonego manewru: od $2 500
-                    <br>
-                    - Wyprzedzanie w miejscu niedozwolonym: od $1 000 do $2 000
-                    <br>
-                    - Jazda pod prąd: $7 000
-                    <br>
-                     - Jazda z wyłączonymi światłami: od $1 000 do $1 500
-                    <br>
-                    - Skracanie: $3 500
-                    <br>
-                    - Zajmowanie więcej niż jednego wyznaczonego na jezdni pasa ruchu: $1 500
-                    <br>
-                    - Wjeżdżanie na pas między jezdniami (jednokierunkowymi): $1 500
-                    <br>
-                    - Poruszanie się po poboczu lub chodniku: $2 000
-                    <br>
-                    - Nieustąpienie pierwszeństwa: od $250 do $600
-                    <br>
-                    - Hamowanie w sposób powodujący zagrożenie bezpieczeństwa ruchu lub jego utrudnianie: $4 000
-                    <br>
-                    - Zawracanie w tunelach, na mostach, wiaduktach, drogach jednokierunkowych oraz szybkiego ruchu: $5 000
-                    <br>
-                    - Specjalne utrudnianie, blokowanie lub tamowanie ruchu drogowego: $4 500
-                    <br>
-                     - Cofanie na drogach szybkiego ruchu: $2 500
-                </p>
-            </div>
-            <div class="cayo">
-                <h1>Cayo Perico:</h1>
-                <p>
-                    - Wyprzedzanie na moście przez pojazdy nieuprzywilejowane: od $8 000 do $12 000
-                    <br>
-                    - Celowe ramowanie: $12 000 + 15 minut więzienia
-                    <br>
-                    - Zatrzymanie się na moście prowadzącym na Cayo Perico: $6 000
-                    <br>
-                    - Cofanie na moście: od $3 000 do $6 000
-                    <br>
-                    - Ucieczka przez most: $10 000
-                    <br>
-                    - Spowodowanie kolizji: $8 500
-                </p>
+                    <label class="checkbox-label" for="przebywanie">
+                    - Kara za przebywanie osób nieupoważnionych na terenie aresztu komendy głównej (tj. całego piętra -1): $10 000 i 10 min więzienia  $<span data-kwota="10000"></span
+                        >  <input type="checkbox" data-kwota="10000" class="checkbox-option" id="przebywanie">
+                </label>
+                <br>
+                <br>
+                <br>
+</p>
+    </div>
+    <div class="manewry">
+        <h1>Manewry:</h1>
+        <p>
+            <label class="checkbox-label" for="manewry">
+            - Wykonanie niedozwolonego manewru: od $2 500
+            <input type="checkbox" data-kwota="2500" class="checkbox-option" id="manewry">
+        </label>
+            <br>
+            <label class="checkbox-label" for="wyprzedanie">
+            - Wyprzedzanie w miejscu niedozwolonym: od $1 000 do $2 000
+            <input type="checkbox" data-kwota="2000" class="checkbox-option" id="wyprzedanie">
+        </label>
+            <br>
+            <label class="checkbox-label" for="jazda">
+            - Jazda pod prąd: $7 000
+            <input type="checkbox" data-kwota="7000" class="checkbox-option" id="jazda">
+        </label>
+            <br>
+            <label class="swiatla" for="przebywanie">
+             - Jazda z wyłączonymi światłami: od $1 000 do $1 500
+             <input type="checkbox" data-kwota="1500" class="checkbox-option" id="swiatla">
+            </label>
+            <br>
+            <label class="checkbox-label" for="skracanie">
+            - Skracanie: $3 500
+            <input type="checkbox" data-kwota="3500" class="checkbox-option" id="skracanie">
+        </label>
+            <br>
+            <label class="checkbox-label" for="pas">
+            - Zajmowanie więcej niż jednego wyznaczonego na jezdni pasa ruchu: $1 500
+            <input type="checkbox" data-kwota="1500" class="checkbox-option" id="pas">
+        </label>
+            <br>
+            <label class="checkbox-label" for="jezdnia">
+            - Wjeżdżanie na pas między jezdniami (jednokierunkowymi): $1 500
+            <input type="checkbox" data-kwota="1500" class="checkbox-option" id="jezdnia">
+        </label>
+            <br>
+            <label class="checkbox-label" for="pobocze">
+            - Poruszanie się po poboczu lub chodniku: $2 000
+            <input type="checkbox" data-kwota="2000" class="checkbox-option" id="pobocze">
+        </label>
+            <br>
+            <label class="checkbox-label" for="pierwszenstwo">
+            - Nieustąpienie pierwszeństwa: od $250 do $600
+            <input type="checkbox" data-kwota="600" class="checkbox-option" id="pierwszenstwo">
+        </label>
+            <br>
+            <label class="checkbox-label" for="hamowanie">
+            - Hamowanie w sposób powodujący zagrożenie bezpieczeństwa ruchu lub jego utrudnianie: $4 000
+            <input type="checkbox" data-kwota="4000" class="checkbox-option" id="hamowanie">
+        </label>
+            <br>
+            <label class="checkbox-label" for="zawracanie">
+            - Zawracanie w tunelach, na mostach, wiaduktach, drogach jednokierunkowych oraz szybkiego ruchu: $5 000
+            <input type="checkbox" data-kwota="5000" class="checkbox-option" id="zawracanie">
+        </label>
+            <br>
+            <label class="checkbox-label" for="specjalnie">
+            - Specjalne utrudnianie, blokowanie lub tamowanie ruchu drogowego: $4 500
+            <input type="checkbox" data-kwota="4500" class="checkbox-option" id="specjalnie">
+        </label>
+            <br>
+            <label class="checkbox-label" for="cofanie">
+             - Cofanie na drogach szybkiego ruchu: $2 500
+             <input type="checkbox" data-kwota="2500" class="checkbox-option" id="cofanie">
+            </label>
+             <br>
+             <br>
+             <br>
+             <br>
+             
+           
+            
+        </p>
+    </div>
+        <div class="cayo">
+            <h1>Cayo Perico:</h1>
+            <p>
+                <label class="checkbox-label" for="wyprzedanie">
+                - Wyprzedzanie na moście przez pojazdy nieuprzywilejowane: od $8 000 do $12 000
+                <input type="checkbox" data-kwota="1200" class="checkbox-option" id="wyprzedzanie">
+            </label>
+                <br>
+                <label class="checkbox-label" for="ramowanie">
+                - Celowe ramowanie: $12 000 + 15 minut więzienia
+                <input type="checkbox" data-kwota="12000" class="checkbox-option" id="ramowanie">
+            </label>
+                <br>
+                <label class="checkbox-label" for="chuj">
+                - Zatrzymanie się na moście prowadzącym na Cayo Perico: $6 000
+                <input type="checkbox" data-kwota="6000" class="checkbox-option" id="chuj">
+            </label>
+                <br>
+                <label class="checkbox-label" for="cofanienamoscie">
+                - Cofanie na moście: od $3 000 do $6 000
+                <input type="checkbox" data-kwota="6000" class="checkbox-option" id="cofanienamoscie">
+            </label>
+                <br>
+                <label class="checkbox-label" for="ucieczkamost">
+                - Ucieczka przez most: $10 000
+                <input type="checkbox" data-kwota="10000" class="checkbox-option" id="ucieczkamost">
+            </label>
+                <br>
+                <label class="checkbox-label" for="spowodowaniekolizji">
+                - Spowodowanie kolizji: $8 500
+                <input type="checkbox" data-kwota="8500" class="checkbox-option" id="spowodowaniekolizji">
+            </label>
+                <br>
+             <br>
+             <br>
+             <br>
+             <br>
+             <br>
+             <br>
+             <br>
+             <br>
+             <br>
+             <br>
+             <br>
+             <br>
+             <br>
+             <br>
+             <br>
+             <br>
+             
+             <label class="checkbox-label" for="przebywanie">
+            
+            </p>
             </div>
             <div class="transport">
                 <h1>Transport:</h1>
                 <p>
+                    <label class="checkbox-label" for="5t">
                     - Przeładowanie pojazdu (5t): $3 000
+                    <input type="checkbox" data-kwota="3000" class="checkbox-option" id="5t">
+                </label>
                     <br>
+                    <label class="checkbox-label" for="10t">
                     - Przeładowanie pojazdu (10t): $5 000
+                    <input type="checkbox" data-kwota="5000" class="checkbox-option" id="10t">
+                </label>
                     <br>
+                    
                     - Przewożenie towarów nielegalnych: $250 * lvl gracza + Anulowanie towaru
+                    
                     <br>
+                    <label class="checkbox-label" for="rozladowanie">
                     - Rozładowanie towaru podczas kontroli: $10 000 + 10 min więzienia
+                    <input type="checkbox" data-kwota="1000" class="checkbox-option" id="rozladowanie">
+                </label>
                 </p>
             </div>
+
             <div class="predkosc">
                 <h1>Prędkość:</h1>
                 <p>
+
+                    <label class="checkbox-label" for="21">
                      - Przekroczenie prędkości o 21-40km/h: $2 000
+                     <input type="checkbox" data-kwota="2000" class="checkbox-option" id="21">
+                    </label>
                     <br>
+                    <label class="checkbox-label" for="41">
                      - Przekroczenie prędkości o 41-80km/h: $2 500
+                     <input type="checkbox" data-kwota="2500" class="checkbox-option" id="41">
+                    </label>
                     <br>
+                    <label class="checkbox-label" for="81">
                      - Przekroczenie prędkości o 81-120km/h: 4 000
+                     <input type="checkbox" data-kwota="4000" class="checkbox-option" id="81">
+                    </label>
                      <br>
+                     <label class="checkbox-label" for="121">
                      - Przekroczenie prędkości od 121km/h i więcej: $6 000
+                     <input type="checkbox" data-kwota="6000" class="checkbox-option" id="121">
+                    </label>
             
                     <br>
+                    <label class="checkbox-label" for="50">
                    - Jazda z prędkością poniżej 50km/h na drogach szybkiego ruchu: od $2 000 do $4 000 
+                   <input type="checkbox" data-kwota="3000" class="checkbox-option" id="50">
+                </label>
                 </p>
             </div>
             <div class="lotniczy">
                 <h1>Ruch lotniczy:</h1>
                 <p>
+                    <label class="checkbox-label" for="dach">
                     - Lądowanie na dachu komisariatu policji: $100 000
+                    <input type="checkbox" data-kwota="100000" class="checkbox-option" id="dach">
+                </label>
                     <br>
+                    <label class="checkbox-label" for="ulica">
                     - Lądowanie na ulicy: $50 000
+                    <input type="checkbox" data-kwota="50000" class="checkbox-option" id="ulica">
+                </label>
                     <br>
+                    <label class="checkbox-label" for="katastrofa">
                     - Spowodowanie katastrofy lotniczej: $30 000
+                    <input type="checkbox" data-kwota="30000" class="checkbox-option" id="katastrofa">
+                </label>
                 </p>
             </div>
-           
             <div class="drogowe">
                 <h1>Zdarzenia drogowe:</h1>
                 <p>
+                    <label class="checkbox-label" for="spowodowaniekolizji">
                     - Spowodowanie kolizji lub wypadku drogowego: $1 500 + naprawa pojazdu uszkodzonego na koszt powodującego zdarzenie
+                    <input type="checkbox" data-kwota="1500" class="checkbox-option" id="stosowanieWulgarnych">
+                </label>
                     <br>
+                    <label class="checkbox-label" for="ramowanie">
                     - Celowe ramowanie: $10 000 + 15 min więzienia
+                    <input type="checkbox" data-kwota="10000" class="checkbox-option" id="ramowanie">
+                </label>
                     <br>
+                    <label class="checkbox-label" for="specjalnieniszczeniae">
                     - Specjalne niszczenie pojazdu innego gracza (kopanie, uderzanie): $5 000
+                    <input type="checkbox" data-kwota="5000" class="checkbox-option" id="specjalnieniszczeniae">
+                </label>
                 </p>
-            </div>
-            <div class="ucieczka">
-                <h1>Ucieczka:</h1>
-                <p>
-                    Ucieczka: $20 000 + 30 min więzienia
-                    <br>
-                    - Pomoc w pościgu na korzyść uciekającego: $15 000 + 10 min więzienia
-                    <br>
-                     - Usunięcie listu gończego: 30 minut więzienia i $50 000
-                </p>
-            </div>
-            <div class="postoj">
-                <h1>Postój:</h1>
-                <p>
-                    - Zatrzymanie się w miejscu niedozwolonym: $1 000
-                    <br>
-                    - Zatrzymanie się na parkingu policyjnym dłużej niż 5 min: $1 500
-                </p>
-            </div>
-            <div class="kradziez">
-                <h1>Kradzież:</h1>
-                <p>
-                    - Kradzież pojazdów prywatnych: $1 000 + 5 min więzienia
-                    <br>
-                    - Kradzież pojazdów frakcyjnych/firmowych: $7 500 + 15 min więzienia
-                </p>
-            </div>
-        </div>
-    </body>
+</div>
+<div class="ucieczka">
+    <h1>Ucieczka:</h1>
+    
+    <p>
+        <label class="checkbox-label" for="1ds">
+        Ucieczka: $20 000 + 30 min więzienia
+        <input type="checkbox" data-kwota="20000" class="checkbox-option" id="1ds">
+  </label>
+        <br>
+        <label class="checkbox-label" for="2ds">
+        - Pomoc w pościgu na korzyść uciekającego: $15 000 + 10 min więzienia
+        <input type="checkbox" data-kwota="15000" class="checkbox-option" id="2ds">
+  </label>
+        <br>
+        <label class="checkbox-label" for="41">
+         - Usunięcie listu gończego: 30 minut więzienia i $50 000
+         <input type="checkbox" data-kwota="50000" class="checkbox-option" id="2ds  ">
+       </label>
+         <br>
+         <br>
+       
+    </p>
+</div>
+
+<div class="postoj">
+    <h1>Postój:</h1>
+    <p>
+        
+        <label class="checkbox-label" for="miejsce">
+        - Zatrzymanie się w miejscu niedozwolonym: $1 000$<span data-kwota="1000"></span>
+        <input type="checkbox" data-kwota="1000" class="checkbox-option" id="miejsce">
+    </label>
+        <br>
+        <label class="checkbox-label" for="parking">
+        - Zatrzymanie się na parkingu policyjnym dłużej niż 5 min: $1 500 $<span data-kwota="15000"></span>
+        <input type="checkbox" data-kwota="15000" class="checkbox-option" id="parking">
+    </label>
+        <br>
+        <br>
+        <br>
+        
+    </p>
+</div>
+
+<div class="kradziez">
+    <h1>Kradzież:</h1>
+    <p>
+        <label class="checkbox-label" for="prywatne">
+        - Kradzież pojazdów prywatnych: $1 000 + 5 min więzienia
+        <input type="checkbox" data-kwota="1000" class="checkbox-option" id="prywatne">
+    </label>
+        <br>
+        <label class="checkbox-label" for="frakcyjnych">
+        - Kradzież pojazdów frakcyjnych/firmowych: $7 500 + 15 min więzienia
+        <input type="checkbox" data-kwota="7500" class="checkbox-option" id="frakcyjnych">
+    </label>
+        <br>
+        <br>
+        <br>
+    </p>
+</div>
+</div>
+
+
+
+
+
+</body>
+</label>
+
 </html>
